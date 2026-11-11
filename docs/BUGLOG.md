@@ -1,0 +1,9 @@
+# BUGLOG
+
+Her denemeden **önce** beklenti yazılır. Beklenti tutmadıysa ve kanıt varsa satırın başına `[BULGU]` gelir.
+
+| Tarih | Beklenti | Ne oldu | Neden | Ölçüm (önce/sonra) | Kanıt (dosya, komut, commit) |
+| --- | --- | --- | --- | --- | --- |
+| 2026-11-11 | CP-00: A'ya B daha yakın çıkar. Her vektörde kaç sayı olur bilmiyorum çünkü hesabı bilmiyorum. | Beklenti tuttu. A ve B doğal olarak birbirine yakın çıktı, ancak C tamamen alakasız olmasına rağmen 0.30'larda skor aldı. Vektör boyutu 768. | | cos(A,B)=0.783 · cos(A,C)=0.305 · cos(B,C)=0.310 · boyut 768 | `scratch/cosine.py`, `scratch/embed.json`, `curl /api/embed` (nomic-embed-text) |
+| 2026-11-12 | CP-00 süre: beklenti denemeden önce yazılmadı (deneyden sonra "~3 saniye bekliyordum" dedi). | İlk istekte sürenin neredeyse tamamı model yüklemesi. Model yüklüyken istek ~100 kat hızlı. | | cold: total 4088 ms (load 3979 ms) / warm: total 38 ms (load 1 ms) | `curl /api/embed` + `jq` süre alanları, `ollama ps` (UNTIL ≈ 3 dk) |
+| [BULGU] 2026-11-12 | CP-00 transfer, D = "The rug is sleeping on the cat.": Anlamı saçma bu cümlenin yakın çıkmasını beklemiyorum çünkü nomic-embed-text modeli eğitim aşamasında benzer anlamlara sahip cümleleri birbirine yakın konumlandırmayı öğrenmiş bir model. Ancak uzak anlama sahip cümleler de daha önce 0.30 bandında bir kosinüs benzerliği gösterdiği için bu yeni cümlede de sadece anlam değişip kelimeler aynı kaldığı için 0.70 değerinde bir yakınlık olabileceğini düşünüyorum. | Beklentiden yüksek: D, A'ya anlamca neredeyse aynı olan B'den daha yakın çıktı. | Hipotez: Kelimeler aynı olup anlam olarak da yakın bir mantıkta olduğu için böyle yüksek bir puan aldı. | cos(A,D)=0.959 · tahmin ~0.70 · cos(A,B)=0.783 | `scratch/cosine.py`, `scratch/embed.json` (4 cümleyle yeniden üretildi), `curl /api/embed` |
