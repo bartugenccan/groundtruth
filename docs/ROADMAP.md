@@ -23,7 +23,7 @@
 |---|---|---|---|---|---|---|
 | CP-00 | Embedding deneyi | İki cümlenin embedding'i alınmış, kosinüs elle hesaplanmış, boyut ve süre ölçülmüş | — | 1 | Done | Passed |
 | CP-01 | Korpus ve golden set v1 | Korpus seçilmiş, gerekçesi yazılmış. 50+ soru 4 kategoride, chunk'tan bağımsız etiketli, versiyonlu dosyada | CP-00 | 7 | Done | Passed |
-| CP-02 | Metrik çekirdeği | recall@k, MRR, nDCG fonksiyonları, elle hesaplanmış örneklere karşı pytest ile doğrulanmış | CP-01 | 3 | Not started | Not assessed |
+| CP-02 | Metrik çekirdeği | recall@k, MRR, nDCG fonksiyonları, elle hesaplanmış örneklere karşı pytest ile doğrulanmış | CP-01 | 3 | In progress | Not assessed |
 | CP-03 | Ingestion ve 3 chunking | Sabit boyut, yapıya duyarlı ve semantic chunking seçilebilir. Chunk metadata'sı golden set etiketine eşlenebiliyor | CP-01 | 6 | Not started | Not assessed |
 | CP-04 | Dense baseline | Uçtan uca ilk sonuç satırı: dense × 3 chunking, kategori bazında metrikler | CP-02, CP-03 | 4 | Not started | Not assessed |
 | CP-05 | CI kapısı | recall@10 baseline'dan 1 puandan fazla düşerse kırmızı. Bilerek bozulan bir değişiklikle kırmızı yandığı gösterilmiş | CP-04 | 4 | Not started | Not assessed |
@@ -53,3 +53,4 @@ Break her checkpoint'in içinde yapılır, ayrı bir faz değildir. Beklenti ön
 - 2026-11-12: CP-00 bitti. nomic-embed-text: 768 boyut, normalize vektörler (norm 1.0), cold ~4 s / warm 38 ms. cos(A,B)=0.78, cos(A,C)=0.31, aynı kelimeler ve farklı anlamla cos(A,D)=0.96 (bulgu adayı, BUGLOG). Sıradaki: CP-01.
 - 2026-11-12: CP-01 sürüyor. Korpus: IFAB 2026/27 + FIBA 2026 v1.1 (İngilizce, telifli, repoya girmez). Etiket: madde adresi + "birlikte tam kapsama". `golden/v1.jsonl` taslağı: 52 soru (20 tek kaynaklı / 12 çok kaynaklı / 10 cevapsız / 10 belirsiz), hepsi `reviewed: false`. Sıradaki: learner incelemesi.
 - 2026-11-14: İnceleme bitti. q047 ve q048 çıkarıldı (yarışmaya göre değişen cevaplar), 50 soru kaldı (20/12/10/8). Learner hepsini PDF'e karşı kontrol ettiğini belirtti, `reviewed: true`. CP-01 Implementation: Done. Learning: teach-back bekleniyor. Açık: IFAB Law önsözü için `IFAB:15` adres kuralının DECISIONS'a yazılması (learner onayı).
+- 2026-11-15: CP-02 başladı. recall@k, MRR, nDCG elle hesaplandı. Kararlar: cevapsız sorular metriklere girmez; recall@k standart (kesirli) tanım. `recall_at_k` + 4 test geçti (61866fc). Sıradaki: `reciprocal_rank`, sonra `ndcg_at_k`.

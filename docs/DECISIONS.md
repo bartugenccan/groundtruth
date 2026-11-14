@@ -69,3 +69,32 @@
 - **Decision:** Önsöz metni bölüm numarasız adresle etiketlenir: `IFAB:15`, `IFAB:14`, `IFAB:6`. `IFAB:15` yalnızca önsözü gösterir, Law 15'in tamamını değil.
 - **Rationale:** Claude'un önerisi, learner onayladı ("Decisions'a yazabilirsin").
 - **Consequences:** CP-03'te önsöz metninin karakter aralığı, Law başlığı ile ilk numaralı bölüm arasındaki metin olarak çıkarılmalı.
+
+## 2026-11-14 — Cevapsız sorular retrieval metriklerine girmez
+
+**Status:** Accepted
+
+- **Context:** Golden set'te 10 cevapsız soru var (`labels: []`). Bu sorularda isabet olabilecek bir chunk yok.
+- **Options:** 0 saymak (recall'u yapay olarak en fazla 40/50 = 0.80'e sınırlar) · 1 saymak (recall'u şişirir) · ortalamaya almamak
+- **Decision:** recall@k, MRR ve nDCG yalnızca etiketli 40 soru üzerinden hesaplanır. Cevapsız sorular CP-08'de "bilmiyorum" davranışı olarak ayrıca ölçülür.
+- **Rationale:** "Ortalamaya girmemeleri daha doğru olur çünkü cevap yok, yanlış değil." (learner)
+- **Consequences:** Sonuç tablosunda cevapsız kategori için retrieval metriği boş kalır. Metrik raporu kaç sorunun hesaba girdiğini (n) de yazmalı.
+
+## 2026-11-14 — Çok etiketli sorularda recall katı (hepsi ya da hiç)
+
+**Status:** Superseded (aynı gün, aşağıdaki "recall@k standart tanım" kararıyla)
+
+- **Context:** Çok kaynaklı ve belirsiz soruların birden fazla etiketi var. Retriever etiketlerin yalnızca bir kısmını getirebilir.
+- **Options:** 0 (hepsi bulunmadıkça bulunmamış) · 0.5 (bulunan etiket oranı, ders kitabındaki tanım; learner'ın ilk seçimi) · 1 (biri yeter)
+- **Decision:** Soru başına recall@k = 1 yalnızca bütün etiketler ilk k'da (birlikte tam kapsama kuralıyla) kapsanmışsa, yoksa 0.
+- **Rationale:** "İhtiyaç olan her şey gelmedi çünkü." (learner) Recall, "LLM'in cevap için ihtiyaç duyduğu her şey geldi mi?" sorusunu ölçer.
+- **Consequences:** Kısmi ilerleme recall'da görünmez; onu nDCG gösterir. Belirsiz sorularda da tüm okumaların maddeleri gelmeli. README'de recall tanımının ders kitabındakinden (kısmi) farklı olduğu yazılmalı.
+
+## 2026-11-14 — recall@k standart tanım
+
+**Status:** Accepted
+
+- **Context:** Learner tasarım sorularının alıştırma olmasını, projenin rehber ve alan standardıyla ilerlemesini istedi. Rehberler (S6, P15) recall@k'yı tanımlamıyor. Standart bilgi erişimi tanımı (Manning ve ark., Introduction to Information Retrieval, bölüm 8): bulunan ilgili öğe / toplam ilgili öğe.
+- **Decision:** Soru başına recall@k = ilk k'da kapsanan farklı etiket sayısı / sorunun etiket sayısı. Metrik, etiketli soruların ortalaması. q002'de iki etiketten biri bulunursa 0.5.
+- **Rationale:** Standart tanım; CI kapısındaki "recall@10" de bu tanımla okunur. Katı "LLM cevap verebilir mi?" görünümü gerekirse ek bir metrik olarak (ör. tam bulma oranı) raporlanabilir.
+- **Consequences:** Tek etiketli sorularda değer 0 ya da 1, çok etiketlilerde kesirli.
