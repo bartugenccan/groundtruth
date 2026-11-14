@@ -1,5 +1,18 @@
+# Python
 .venv/
 __pycache__/
 *.pyc
+
+# Tool caches
+.pytest_cache/
+.ruff_cache/
+
+# Secrets
 .env
-corpus/raw/
+
+# Copyrighted corpus (IFAB, FIBA): raw PDFs and any extracted text stay local
+corpus/
+*.pdf
+
+# Personal learning notes (not part of the project)
+.vibe-wise/

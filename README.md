@@ -1,26 +1,27 @@
 # groundtruth (P1)
 
-Hybrid RAG ve retrieval eval: bir değişikliğin retrieval'ı iyileştirip iyileştirmediğini görüşle değil, sayıyla kanıtlamak.
+Hybrid RAG and retrieval evaluation: prove with numbers, not impressions, whether a change makes retrieval better.
 
-**Hafta:** W1-4 (6 Kas–3 Ara) · ~48 saat · **Dil:** Python · **Model:** Ollama (yerel, ücretsiz)
-**Rehber:** `../design-cards/sources/P15.pdf` s.16-19 (Hybrid RAG) ve `S6.pdf` s.6 (Groundtruth). Fazlar bu iki rehberden.
+**Timeline:** W1–4 (Nov 6 – Dec 3) · ~48 hours · **Language:** Python · **Models:** Ollama (local, free)
 
-## Ship gate (bitti sayılması için)
-- [ ] En az 50 soruluk golden set (Claude taslağı, her soru insan tarafından PDF'e karşı doğrulanmış): tek kaynaklı, çok kaynaklı, cevabı olmayan, belirsiz
-- [ ] 3 konfigürasyon karşılaştırıldı: chunk boyutu, hybrid vs dense, reranker açık/kapalı
-- [ ] Sonuç tablosu (recall@k, MRR, nDCG, kategori bazında) ve takası yazılmış bir öneri
-- [ ] CI kapısı: recall@10 1 puandan fazla düşerse PR kırılır, bilerek bozulan bir değişiklikle gösterildi
-- [ ] Hâlâ başarısız olan 5 sorunun hata analizi
-- [ ] README sırası: tek satır sonuç → tablo → diyagram → kararlar → neler çalışmadı
+> Working notes in `docs/` (roadmap, decisions, bug log) are written in Turkish.
 
-## Adımlar
-0. [ ] **Deney (≤1 saat):** Ollama'da bir embedding modeli seç ve doğrula. İki cümlenin embedding'ini al, kosinüs benzerliğini elle hesapla.
-1. [ ] Korpus seç (gerçek ve birbirine bağlı dokümanlar, Guester verisi değil) ve golden set'i yaz. Eval özellikten önce gelir.
-2. [ ] Ingestion ve 3 chunking stratejisi
-3. [ ] Dense arama, BM25, RRF ile birleştirme, ardından reranker
-4. [ ] Cevap üretimi, citation doğrulama, "bilmiyorum" durumu
-5. [ ] Eval: retrieval metrikleri ile faithfulness ayrı raporlanır
-6. [ ] Break: beklentiyi `docs/BUGLOG.md`'ye yaz, sonra kır (chunk boyutu, embedding değişimi, bozuk dosya, cevapsız soru)
-7. [ ] CI kapısı ve paketleme
+## Ship gate (definition of done)
+- [ ] Golden set of at least 50 questions (drafted by Claude, every question verified by a human against the source PDF): single-source, multi-source, unanswerable, ambiguous
+- [ ] 3 configurations compared: chunk size, hybrid vs. dense, reranker on/off
+- [ ] Results table (recall@k, MRR, nDCG, per category) and a recommendation with its trade-offs spelled out
+- [ ] CI gate: a PR fails if recall@10 drops by more than 1 point, demonstrated with a deliberately broken change
+- [ ] Error analysis of the 5 questions that still fail
+- [ ] README order: one-line result → table → diagram → decisions → what didn't work
 
-**Bir alt katman:** Index bellekte ne kadar yer tutuyor? Bir sorgunun süresi nerelere gidiyor? Ölç.
+## Steps
+0. [ ] **Experiment (≤1 hour):** Pick an embedding model in Ollama and verify it. Embed two sentences and compute their cosine similarity by hand.
+1. [ ] Pick a corpus (real, interlinked documents) and write the golden set. Evaluation comes before features.
+2. [ ] Ingestion and 3 chunking strategies
+3. [ ] Dense search, BM25, fusion with RRF, then a reranker
+4. [ ] Answer generation, citation verification, "I don't know" handling
+5. [ ] Eval: retrieval metrics and faithfulness reported separately
+6. [ ] Break: write the expectation in `docs/BUGLOG.md` first, then break it (chunk size, embedding change, corrupted file, unanswerable question)
+7. [ ] CI gate and packaging
+
+**One layer down:** How much memory does the index take? Where does a query's time go? Measure it.
