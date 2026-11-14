@@ -92,3 +92,18 @@ def test_reciprocal_rank_invalid_k_raises_value_error():
 def test_ndcg_at_k_scenarios(ranked, k, expected):
     relevant = {"IFAB:7.1", "FIBA:8.1"}
     assert ndcg_at_k(ranked, relevant, k) == pytest.approx(expected, abs=0.01)
+
+
+def test_late_hit_fifth_position():
+    ranked = ["c1", "c2", "c3", "c4", "A"]
+    relevant = {"A", "B"}
+    k = 5
+
+    # 2 doğru etiketten 1 tanesi bulundu (1 / 2 = 0.5)
+    assert recall_at_k(ranked, relevant, k) == 0.5
+
+    # İlk ve tek isabet 5. sırada (1 / 5 = 0.2)
+    assert reciprocal_rank(ranked, relevant, k) == 0.2
+
+    # 5. sıradaki isabetin logaritmik kazancı: (1 / log2(6)) / (1 + 1 / log2(3)) ≈ 0.2372
+    assert ndcg_at_k(ranked, relevant, k) == pytest.approx(0.24, abs=0.01)
