@@ -21,8 +21,8 @@ Capability goal: Not specified
 
 ## Preferences
 Checkpoint frequency: Normal
-Explanation style: Mantıklıysa diyagramla anlat (learner isteği, 2026-11-11)
-Question style: Open-ended ("bilmiyorum, tahminim şu" geçerli)
+Explanation style: Mantıklıysa diyagramla anlat (learner isteği, 2026-11-11). Her CP/parça başında önce kavramları anlat + kısa alıştırma, tasarım sorusu sonra (learner isteği, 2026-11-12)
+Question style: Open-ended ("bilmiyorum, tahminim şu" geçerli). Yanlış/riskli kararda araya gir; karar veremezse gerekçeli öneri ver, karar learner'da (2026-11-12)
 Implementation style: More hands-on — learner yazar; AI hedef, kütüphane/tipler, imzalar ve sıralı TODO verir (CLAUDE.md)
 
 ## Strong Concepts

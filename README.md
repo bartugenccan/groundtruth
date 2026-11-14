@@ -6,7 +6,7 @@ Hybrid RAG ve retrieval eval: bir değişikliğin retrieval'ı iyileştirip iyil
 **Rehber:** `../design-cards/sources/P15.pdf` s.16-19 (Hybrid RAG) ve `S6.pdf` s.6 (Groundtruth). Fazlar bu iki rehberden.
 
 ## Ship gate (bitti sayılması için)
-- [ ] Elle yazılmış en az 50 soruluk golden set: tek kaynaklı, çok kaynaklı, cevabı olmayan, belirsiz
+- [ ] En az 50 soruluk golden set (Claude taslağı, her soru insan tarafından PDF'e karşı doğrulanmış): tek kaynaklı, çok kaynaklı, cevabı olmayan, belirsiz
 - [ ] 3 konfigürasyon karşılaştırıldı: chunk boyutu, hybrid vs dense, reranker açık/kapalı
 - [ ] Sonuç tablosu (recall@k, MRR, nDCG, kategori bazında) ve takası yazılmış bir öneri
 - [ ] CI kapısı: recall@10 1 puandan fazla düşerse PR kırılır, bilerek bozulan bir değişiklikle gösterildi
