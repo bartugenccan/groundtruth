@@ -98,3 +98,13 @@
 - **Decision:** Soru başına recall@k = ilk k'da kapsanan farklı etiket sayısı / sorunun etiket sayısı. Metrik, etiketli soruların ortalaması. q002'de iki etiketten biri bulunursa 0.5.
 - **Rationale:** Standart tanım; CI kapısındaki "recall@10" de bu tanımla okunur. Katı "LLM cevap verebilir mi?" görünümü gerekirse ek bir metrik olarak (ör. tam bulma oranı) raporlanabilir.
 - **Consequences:** Tek etiketli sorularda değer 0 ya da 1, çok etiketlilerde kesirli.
+
+## 2026-11-15 — Geçersiz k için hata fırlatılır
+
+**Status:** Accepted
+
+- **Context:** Python negatif slice'ı hata saymaz: `ranked[:-1]` son eleman hariç hepsini verir. Guard'sız `reciprocal_rank(q001, k=-1)` 0.333 döndürdü (ölçüldü). `recall_at_k` ise `k <= 0` için 0.0 döndürüyor.
+- **Options:** `k <= 0` → 0.0 (sessiz, recall ile tutarlı) · `k <= 0` → `ValueError` (yüksek sesle)
+- **Decision:** Metrik fonksiyonları `k <= 0` için `ValueError` fırlatır.
+- **Rationale:** "0.0 bana risk gibi geliyor, uzun vadede yanlış bir sonuca vardırabilir." (learner)
+- **Consequences:** `recall_at_k` da aynı davranışa çekilmeli ve guard'lar testle korunmalı. `ndcg_at_k` aynı kuralla yazılır.
