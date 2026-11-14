@@ -22,7 +22,7 @@
 | ID | Checkpoint | Outcome | Dependencies | ~Saat | Implementation | Learning |
 |---|---|---|---|---|---|---|
 | CP-00 | Embedding deneyi | İki cümlenin embedding'i alınmış, kosinüs elle hesaplanmış, boyut ve süre ölçülmüş | — | 1 | Done | Passed |
-| CP-01 | Korpus ve golden set v1 | Korpus seçilmiş, gerekçesi yazılmış. 50+ soru 4 kategoride, chunk'tan bağımsız etiketli, versiyonlu dosyada | CP-00 | 7 | Done | Not assessed |
+| CP-01 | Korpus ve golden set v1 | Korpus seçilmiş, gerekçesi yazılmış. 50+ soru 4 kategoride, chunk'tan bağımsız etiketli, versiyonlu dosyada | CP-00 | 7 | Done | Passed |
 | CP-02 | Metrik çekirdeği | recall@k, MRR, nDCG fonksiyonları, elle hesaplanmış örneklere karşı pytest ile doğrulanmış | CP-01 | 3 | Not started | Not assessed |
 | CP-03 | Ingestion ve 3 chunking | Sabit boyut, yapıya duyarlı ve semantic chunking seçilebilir. Chunk metadata'sı golden set etiketine eşlenebiliyor | CP-01 | 6 | Not started | Not assessed |
 | CP-04 | Dense baseline | Uçtan uca ilk sonuç satırı: dense × 3 chunking, kategori bazında metrikler | CP-02, CP-03 | 4 | Not started | Not assessed |

@@ -60,3 +60,12 @@
 - **Rationale:** Claude'un önerisi, learner onayladı (learner kendi gerekçesini yazmadı). Tam içerme, FIBA'da alt maddelerin ~%17'si 500 karakteri aştığı (kaba regex ölçümü) ve 229 karakterlik medyan bir maddenin 500'lük sabit chunk'a sığma olasılığı ~%54 olduğu için sabit boyutlu chunking'i kural yüzünden cezalandırırdı.
 - **Consequences:** CP-03'te chunk metadata'sı ve golden set etiketleri kaynak metindeki karakter konumlarına eşlenebilmeli. "Kısmi" kapsama (çok kaynaklıda tek adres bulunması) CP-02'de karara bağlanacak.
 - **Revisit when:** Karakter konumu eşlemesi PDF metin çıkarma yüzünden güvenilmez olursa.
+
+## 2026-11-14 — Law önsözü için adres kuralı
+
+**Status:** Accepted
+
+- **Context:** Bazı IFAB kuralları numaralı bir bölümde değil, Law'un giriş metninde (1. bölümden önce) duruyor. Örnek: "A goal cannot be scored directly from a throw-in" Law 15'in başında.
+- **Decision:** Önsöz metni bölüm numarasız adresle etiketlenir: `IFAB:15`, `IFAB:14`, `IFAB:6`. `IFAB:15` yalnızca önsözü gösterir, Law 15'in tamamını değil.
+- **Rationale:** Claude'un önerisi, learner onayladı ("Decisions'a yazabilirsin").
+- **Consequences:** CP-03'te önsöz metninin karakter aralığı, Law başlığı ile ilk numaralı bölüm arasındaki metin olarak çıkarılmalı.
