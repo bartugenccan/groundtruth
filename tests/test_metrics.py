@@ -1,5 +1,6 @@
 import pytest
-from groundtruth.metrics import recall_at_k, reciprocal_rank
+
+from groundtruth.metrics import ndcg_at_k, recall_at_k, reciprocal_rank
 
 
 def test_recall_at_k_single_relevant():
@@ -35,6 +36,7 @@ def test_recall_at_k_empty_relevant_raises_value_error():
     with pytest.raises(ValueError, match="Relevant set cannot be empty."):
         recall_at_k(ranked, relevant, k=3)
 
+
 def test_reciprocal_rank():
     # 1. q001 (3. sırada isabet)
     q001_ranked = ["c1", "c2", "FIBA:41.1", "c4", "c5"]
@@ -56,6 +58,8 @@ def test_reciprocal_rank():
 
     # 5. q001, k=2 (İsabet 3. sırada olduğu için ilk 2'de bulunamıyor)
     assert reciprocal_rank(q001_ranked, q001_relevant, k=2) == 0.0
+
+
 def test_recall_at_k_invalid_k_raises_value_error():
     ranked = ["c1", "c2", "c3"]
     relevant = {"c1"}
@@ -70,3 +74,21 @@ def test_reciprocal_rank_invalid_k_raises_value_error():
 
     with pytest.raises(ValueError):
         reciprocal_rank(ranked, relevant, k=-1)
+
+
+@pytest.mark.parametrize(
+    "ranked, k, expected",
+    [
+        # 1. ✓✗✗✓✗: İsabetler 1. ve 4. sırada (Sıralama ödülü yüksek -> ~0.877)
+        (["IFAB:7.1", "c2", "c3", "FIBA:8.1", "c5"], 5, 0.88),
+        # 2. ✗✓✓✗✗: İsabetler 2. ve 3. sırada (Sıralama kaybı var -> ~0.693)
+        (["c1", "IFAB:7.1", "FIBA:8.1", "c4", "c5"], 5, 0.69),
+        # 3. ✓✗✗✗✗: Yalnızca bir etiket bulunmuş (IDCG tüm relevant üzerinden hesaplanmalı -> ~0.613)
+        (["IFAB:7.1", "c2", "c3", "c4", "c5"], 5, 0.61),
+        # 4. q002, k=1: min(len(relevant), k) sınırını koruyan test (1.0)
+        (["IFAB:7.1", "c2", "c3", "c4", "c5"], 1, 1.0),
+    ],
+)
+def test_ndcg_at_k_scenarios(ranked, k, expected):
+    relevant = {"IFAB:7.1", "FIBA:8.1"}
+    assert ndcg_at_k(ranked, relevant, k) == pytest.approx(expected, abs=0.01)

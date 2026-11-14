@@ -12,8 +12,10 @@ QUERIES = {
     "Q2": "my app can't connect to the backend",
 }
 
+
 def tokenize(text):
     return re.findall(r"[a-z0-9_']+", text.lower())
+
 
 def embed(texts):
     req = urllib.request.Request(
@@ -23,8 +25,10 @@ def embed(texts):
     )
     return np.array(json.load(urllib.request.urlopen(req))["embeddings"])
 
+
 def cosine(a, b):
     return float(a @ b / (np.linalg.norm(a) * np.linalg.norm(b)))
+
 
 ids = list(DOCS)
 bm25 = BM25Okapi([tokenize(DOCS[i]) for i in ids])
