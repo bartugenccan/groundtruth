@@ -8,7 +8,7 @@
 - **Current state:** 2026-11-10 itibarıyla kod yok, commit yok. `docs/BUGLOG.md` boş. Ollama'da `nomic-embed-text` ve `qwen3:4b` kurulu.
 - **Stack / runtime:** Python 3.14, Ollama (yerel embedding ve üretim), pytest. Vector store, BM25 kütüphanesi ve reranker kararları ilgili checkpoint'te verilecek.
 - **Constraints:** ~48 saat, bitiş 3 Aralık. GTX 1080 Ti 11 GB, 16 GB RAM. Ücretli API yok. Guester verisi yok. Repo public olacak.
-- **Out of scope:** FastAPI servisi, dashboard, Docker, demo videosu, near-duplicate tespiti ve PDF/HTML loader'ı. LLM-as-judge ile citation doğrulama P2 judge-gate'e kaldı. P1'de citation'ın getirilen chunk'lardan birine işaret ettiği deterministik olarak kontrol edilir.
+- **Out of scope:** FastAPI servisi, dashboard, Docker, demo videosu, near-duplicate tespiti ve genel çok formatlı loader (IFAB ve FIBA PDF'lerine özel çıkarıcı kapsamda, bkz. DECISIONS 2026-11-23). LLM-as-judge ile citation doğrulama P2 judge-gate'e kaldı. P1'de citation'ın getirilen chunk'lardan birine işaret ettiği deterministik olarak kontrol edilir.
 
 ## Learning objectives
 - Embedding ve kosinüs benzerliğini elle hesaplayıp açıklayabilmek.

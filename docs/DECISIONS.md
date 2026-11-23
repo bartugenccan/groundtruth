@@ -108,3 +108,14 @@
 - **Decision:** Metrik fonksiyonları `k <= 0` için `ValueError` fırlatır.
 - **Rationale:** "0.0 bana risk gibi geliyor, uzun vadede yanlış bir sonuca vardırabilir." (learner)
 - **Consequences:** `recall_at_k` da aynı davranışa çekilmeli ve guard'lar testle korunmalı. `ndcg_at_k` aynı kuralla yazılır.
+
+## 2026-11-23 — Kaynağa özel PDF çıkarıcı kapsamda, genel loader dışarıda
+
+**Status:** Accepted
+
+- **Context:** 2026-11-10 kapsam kararı PDF/HTML loader'ı dışarıda bırakıyordu, ama 2026-11-12'de seçilen iki kaynak da PDF. CP-03 deneyinde (BUGLOG 2026-11-23) pypdf `extract_text` IFAB'da Law sayfalarını okuma sırasında verdi (Law 1→17, gövde soldan sağa). Diyagram sayfalarında sıra karışık, metinde sayfa numarası, tekrar eden başlık ve bağ harfi (`ﬁ`) gürültüsü var.
+- **Options:** Genel çok formatlı loader · yalnızca IFAB ve FIBA PDF'leri için özel çıkarıcı ve temizleyici · metni elle hazırlamak
+- **Decision:** Genel loader kapsam dışı kalır. IFAB ve FIBA PDF'leri için pypdf ile çalışan, bu iki belgeye özel bir çıkarıcı ve temizleyici kapsama girer. Madde haritası ve chunk'lar aynı temiz metin sürümünden üretilir.
+- **Rationale:** "İşimizi kolaylaştırdığını düşünüyorum, sıralı olması falan; pypdf aracı işimize yarıyor bu projede." (learner)
+- **Consequences:** FIBA çıkarımı bu deneyde sınanmadı, çıkarıcının ilk kontrolü FIBA olacak. Temizlik kuralı değişirse harita ve chunk'lar yeniden üretilir. Çıkarılan metin telif nedeniyle `corpus/` altında yerel kalır.
+- **Revisit when:** Etiketlenen bir madde sırası karışık bir sayfaya (ör. IFAB 115-118) düşerse.
