@@ -1,0 +1,4 @@
+# cryptography: not imported directly; pypdf needs it to open the AES-encrypted FIBA PDF
+cryptography==50.0.2
+pypdf==7.1.1
+rank-bm25==0.2.2
